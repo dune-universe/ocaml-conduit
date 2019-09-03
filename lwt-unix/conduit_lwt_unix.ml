@@ -250,6 +250,10 @@ let connect_with_tls_native ~ctx (`Hostname hostname, `IP ip, `Port port) =
       Conduit_lwt_tls.X509.private_of_pems ~cert ~priv_key >|= fun certificate ->
       Some (`Single certificate)
   ) >>= fun certificates ->
+  (try Lwt.return (Domain_name.(of_string_exn hostname |> host_exn))
+   with Invalid_argument msg ->
+    Lwt.fail_with (Printf.sprintf "Client hostname invalid: %s" msg)
+  ) >>= fun hostname ->
   Conduit_lwt_tls.Client.connect ?src:ctx.src ?certificates hostname sa
   >|= fun (fd, ic, oc) ->
   let flow = TCP { fd ; ip ; port } in
