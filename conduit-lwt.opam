@@ -20,5 +20,8 @@ build: [
   ["dune" "subst"] {pinned}
   ["dune" "build" "-p" name "-j" jobs]
 ]
-dev-repo: "git+https://github.com/mirage/ocaml-conduit.git"
 synopsis: "A portable network connection establishment library using Lwt"
+dev-repo: "git+https://github.com/dune-universe/ocaml-conduit.git"
+url {
+  src: "git+https://github.com/dune-universe/ocaml-conduit.git#duniverse-master"
+}
